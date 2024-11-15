@@ -541,7 +541,7 @@ class ReadabilityTest extends \PHPUnit\Framework\TestCase
     {
         $readability = $this->getReadability($content, 'http://0.0.0.0');
         $readability->debug = true;
-        $res = $readability->init();
+        $readability->init();
 
         if ($shouldBeVisible) {
             $this->assertStringContainsString('WONDERFUL content', $readability->getContent()->getInnerHtml());
