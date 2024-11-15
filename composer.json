@@ -1,10 +1,15 @@
 {
-    "name": "j0k3r/php-readability",
+    "name": "tacman/php-readability",
     "type": "library",
-    "description": "Automatic article extraction from HTML",
+    "description": "Automatic article extraction from HTML, fork of j0k3r/php-readability",
     "keywords": ["article extraction","content extraction","extraction","article","content","html"],
     "license": "Apache-2.0",
-    "authors": [{
+    "authors": [
+        {
+            "name": "Tac Tacelosky",
+            "email": "tacman@gmail.com",
+            "role": "Developer, update to php 8"
+        },{
         "name": "Jeremy Benoist",
         "email": "jeremy.benoist@gmail.com",
         "homepage": "http://www.j0k3r.net",
