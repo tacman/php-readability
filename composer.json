@@ -9,7 +9,8 @@
             "name": "Tac Tacelosky",
             "email": "tacman@gmail.com",
             "role": "Developer, update to php 8"
-        },{
+        },
+        {
         "name": "Jeremy Benoist",
         "email": "jeremy.benoist@gmail.com",
         "homepage": "http://www.j0k3r.net",
@@ -40,7 +41,7 @@
         "symfony/phpunit-bridge": "^6.4|^7.0",
         "phpstan/phpstan": "^1.0||^2.0",
         "phpstan/phpstan-phpunit": "^1.0||^2.0.1",
-        "rector/rector": "^1.2",
+        "rector/rector": "^2.0",
         "phpunit/phpunit": "^9"
     },
     "suggest": {
