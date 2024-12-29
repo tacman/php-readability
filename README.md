@@ -1,3 +1,9 @@
+composer config repositories.readability '{"type": "path", "url": "~/g/tacman/php-readability"}'
+composer req tacman/php-readability:"*@dev"
+
+composer config repositories.graby '{"type": "path", "url": "~/g/tacman/graby"}'
+composer req tacman/graby:"*@dev"
+
 # Readability
 
 ![CI](https://github.com/j0k3r/php-readability/workflows/CI/badge.svg)
