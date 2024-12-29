@@ -153,6 +153,8 @@ class Readability implements LoggerAwareInterface
         $this->useTidy = $useTidy && \function_exists('tidy_parse_string');
 
         $this->logger = new NullLogger();
+
+        $this->init();
     }
 
     public function setLogger(LoggerInterface $logger): void
@@ -261,6 +263,7 @@ class Readability implements LoggerAwareInterface
         $innerDiv->appendChild($articleContent);
         $overlay->appendChild($innerDiv);
 
+
         // without tidy the body can (sometimes) be wiped, so re-create it
         if (false === isset($this->body->childNodes)) {
             $this->body = $this->dom->createElement('body');
@@ -268,13 +271,24 @@ class Readability implements LoggerAwareInterface
 
         // Clear the old HTML, insert the new content.
         $this->body->setInnerHtml('');
-        $this->body->appendChild($overlay);
-        $this->body->removeAttribute('style');
-        $this->postProcessContent($articleContent);
 
-        // Set title and content instance variables.
-        $this->articleTitle = $articleTitle;
-        $this->articleContent = $articleContent;
+        // https://stackoverflow.com/questions/1759137/domelement-cloning-and-appending-wrong-document-error
+            $node = $this->body->ownerDocument->importNode($overlay, true);
+            $this->body->appendChild($node);
+
+//            $this->body->appendChild($overlay);
+            $this->body->removeAttribute('style');
+            $this->postProcessContent($articleContent);
+
+            // Set title and content instance variables.
+            $this->articleTitle = $articleTitle;
+            $this->articleContent = $articleContent;
+        try {
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+        }
+
+//        dd($this->body, $overlay, $articleContent, $articleTitle, (string)$this->articleTitle);
 
         return $this->success;
     }
@@ -835,7 +849,12 @@ class Readability implements LoggerAwareInterface
         $readability = $this->dom->createAttribute('readability');
         // this is our contentScore
         $readability->value = 0;
-        $node->setAttributeNode($readability);
+        try {
+            $node->setAttributeNode($readability);
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            return;
+        }
 
         // using strtoupper just in case
         switch (strtoupper($node->tagName)) {
@@ -1057,7 +1076,9 @@ class Readability implements LoggerAwareInterface
                 } else {
                     $scoreDivider = $level * 3;
                 }
-                $ancestor->getAttributeNode('readability')->value += $contentScore / $scoreDivider;
+                if ($ancestor->getAttributeNode('readability')) {
+                    $ancestor->getAttributeNode('readability')->value += $contentScore / $scoreDivider;
+                }
             }
         }
 
@@ -1142,7 +1163,15 @@ class Readability implements LoggerAwareInterface
             } else {
                 $topCandidate->setInnerHtml($page->getInnerHTML());
                 $page->setInnerHtml('');
-                $page->appendChild($topCandidate);
+                // hack, not sure this is right
+//                $node = $page->importNode($topCandidate);
+//                $page->appendChild($node);
+                    $page->appendChild($topCandidate);
+                try {
+                } catch (\Exception $exception) {
+                    // ??
+                    return false;
+                }
             }
 
             $this->initializeNode($topCandidate);
