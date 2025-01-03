@@ -1164,10 +1164,8 @@ class Readability implements LoggerAwareInterface
                 $topCandidate->setInnerHtml($page->getInnerHTML());
                 $page->setInnerHtml('');
                 // hack, not sure this is right
-//                $node = $page->importNode($topCandidate);
-//                $page->appendChild($node);
-                    $page->appendChild($topCandidate);
                 try {
+                    $page->appendChild($topCandidate);
                 } catch (\Exception $exception) {
                     // ??
                     return false;
