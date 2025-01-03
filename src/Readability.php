@@ -1176,7 +1176,9 @@ class Readability implements LoggerAwareInterface
         } elseif ($topCandidate) {
             $alternativeCandidateAncestors = [];
             foreach ($topCandidates as $candidate) {
-                if ((int) $candidate->getAttribute('readability') / (int) $topCandidate->getAttribute('readability') >= 0.75) {
+                $readabilityAttribute = (int) $topCandidate->getAttribute('readability');
+
+                if ($readabilityAttribute && ((int) $candidate->getAttribute('readability') /  $readabilityAttribute >= 0.75)) {
                     $ancestors = $this->getAncestors($candidate);
                     $this->logger->debug('Adding ' . \count($ancestors) . ' alternative ancestors for ' . $candidate->getNodePath());
                     $alternativeCandidateAncestors[] = $ancestors;
